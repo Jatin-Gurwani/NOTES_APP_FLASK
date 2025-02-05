@@ -1,7 +1,36 @@
-<!DOCTYPE html>
-<head></head>
-<body>
-    <h1>Welcome To Notes API </h1>
-    <h2> Please use postman to work with our api</h2>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block styles %}
+    {{super()}}
+    <style>
+        .home-bg{
+            background-image: url("{{url_for('static', filename='img/home-bg.jpg')}}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 92.1vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+    </style>
+{% endblock %}
+
+{% block title %}<title>Home-NotesAPP</title>{% endblock %}
+
+{% if info_message %}
+    <p class="alert alert-info">{{info_message}}</p>
+{% endif %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row home-bg">
+            <div class="col-md-5 text-center bg-dark" style="--bs-bg-opacity: 0.35; border-radius: 20px;">
+                <h1 class="display-1 text-light fw-normal">What will you<br>achieve today?</h1>
+                <p class="text-light fw-lighter">Remember everything and tackle any project with your notes, tasks,<br>and schedule all in one place.</p>
+                <a href="{{url_for('APP_USER.app_register')}}" class="btn btn-outline-dark btn-lg">Get Started</a>
+                <br><br>
+        </div>
+    </div>
+{% endblock %}

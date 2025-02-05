@@ -8,3 +8,5 @@ oracledb
 passlib
 flask-migrate
 flask-jwt-extended
+flask-wtf
+bootstrap-flask

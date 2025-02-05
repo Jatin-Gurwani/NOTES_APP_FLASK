@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %} <title>Login</title> {% endblock %}
+
+{% block styles %}
+    {{ super()}}
+    <style>
+        .login-bg{
+            background-image: url("{{url_for('static', filename='img/bg01.jpg')}}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 92.1vh;
+            display: flex;
+        }
+    </style>
+    
+{% endblock  %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row login-bg">
+            <div class="col-md-6 align-self-center mx-auto bg-dark text-light" style="--bs-bg-opacity: 0.8; border-radius: 20px;" >
+                <h1 class="text-center pt-1"> Login</h1>
+                {% from 'bootstrap5/form.html' import render_form %}
+                {{ render_form(form) }}
+                <p>New User ? <a href="{{ url_for('APP_USER.app_register') }}">Register</a></p>
+            </div>
+     
+        
+
+    </div>
+{% endblock  %}
