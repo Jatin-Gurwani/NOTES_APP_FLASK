@@ -1,0 +1,15 @@
+# Ignore Python cache files
+__pycache__/
+*.pyc
+
+# Ignore environment files
+.venv
+.db
+
+# Ignore local development files
+.vscode/
+.idea/
+*.log
+
+# Ignore test files and directories
+

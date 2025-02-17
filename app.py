@@ -5,20 +5,21 @@ from resources import blp_api_user,blp_api_notes,blp_api_access
 from sqlalchemy.exc import SQLAlchemyError,IntegrityError
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
+from config import app_config
 
 app = Flask(__name__)
+cfg =app_config()
 app_url_prefix = '/app'
-db_url= "oracle+oracledb://NOTES_FLASK_APP:admin_user@localhost:1521/?service_name=freepdb1"
 
-app.config["PROPAGATE_EXCEPTIONS"] = True
-app.config["API_TITLE"] = "Notes REST API"
-app.config["API_VERSION"] = "v1"
-app.config["OPENAPI_VERSION"] = "3.0.3"
-app.config["OPENAPI_URL_PREFIX"] = "/"
-app.config["OPENAPI_SWAGGER_UI_PATH"] = "/apidocs"
-app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
-app.config["SQLALCHEMY_DATABASE_URI"]= db_url
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["PROPAGATE_EXCEPTIONS"] = cfg.PROPAGATE_EXCEPTIONS
+app.config["API_TITLE"] = cfg.API_TITLE
+app.config["API_VERSION"] = cfg.API_VERSION
+app.config["OPENAPI_VERSION"] = cfg.OPENAPI_VERSION
+app.config["OPENAPI_URL_PREFIX"] = cfg.OPENAPI_URL_PREFIX
+app.config["OPENAPI_SWAGGER_UI_PATH"] = cfg.OPENAPI_SWAGGER_UI_PATH
+app.config["OPENAPI_SWAGGER_UI_URL"] = cfg.OPENAPI_SWAGGER_UI_URL
+app.config["SQLALCHEMY_DATABASE_URI"]= cfg.SQLALCHEMY_DATABASE_URI
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = cfg.SQLALCHEMY_TRACK_MODIFICATIONS
 
 
 
@@ -26,7 +27,7 @@ db.init_app(app)
 migrate=Migrate(app,db)
 
 
-app.config["JWT_SECRET_KEY"] = "Notes Flask App"
+app.config["JWT_SECRET_KEY"] = cfg.JWT_SECRET_KEY
 jwt = JWTManager(app)
 
 

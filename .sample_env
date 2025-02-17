@@ -1,0 +1,24 @@
+#Database Configuration
+DB_Extension = oracle+oracledb
+DB_Username = development_db
+DB_Password = user_password
+DB_Host = localhost
+DB_Port = 1521
+DB_Name = freepdb1
+SQLALCHEMY_DATABASE_URI = ${DB_Extension}://${DB_Username}:${DB_Password}@${DB_Host}:${DB_Port}/?service_name=${DB_Name}
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+
+#Flask Configuration
+PROPAGATE_EXCEPTIONS = True
+API_TITLE = Notes REST API
+API_VERSION = v1
+OPENAPI_VERSION = 3.0.3
+OPENAPI_URL_PREFIX = /
+OPENAPI_SWAGGER_UI_PATH = /apidocs
+OPENAPI_SWAGGER_UI_URL = https://cdn.jsdelivr.net/npm/swagger-ui-dist/
+
+#JWT Configuration
+JWT_SECRET_KEY =  Flask_secret_code
+
+
