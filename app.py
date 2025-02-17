@@ -1,11 +1,14 @@
-from flask import Flask,render_template,request,jsonify
+from flask import Flask,render_template,request,jsonify,session,redirect,url_for
+from flask_bootstrap import Bootstrap5
 from flask_smorest import Api
+from flask_wtf import CSRFProtect
 from models import db, usermodel
-from resources import blp_api_user,blp_api_notes,blp_api_access
+from resources import blp_api_user,blp_api_notes,blp_api_access,blp_app_user,blp_app_notes
 from sqlalchemy.exc import SQLAlchemyError,IntegrityError
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from config import app_config
+import urllib.parse
 
 app = Flask(__name__)
 cfg =app_config()
@@ -28,6 +31,10 @@ migrate=Migrate(app,db)
 
 
 app.config["JWT_SECRET_KEY"] = cfg.JWT_SECRET_KEY
+
+
+bootstrap = Bootstrap5(app)
+app.config["SECRET_KEY"] = "Notes Flask App"
 jwt = JWTManager(app)
 
 
@@ -64,9 +71,32 @@ API = Api(app)
 API.register_blueprint(blp_api_user)
 API.register_blueprint(blp_api_notes)
 API.register_blueprint(blp_api_access)
+API.register_blueprint(blp_app_user,url_prefix = '/')
+API.register_blueprint(blp_app_notes,url_prefix = '/app')
 
+@app.errorhandler(404)
+def page_not_found(e = None):
+    if request.path.startswith('/api/'):
+         return jsonify({"status": "Not Found","code": 404}),404
+    else:
+        return render_template('404.html'),404
 
-@app.route('/')
-def introduction():
-    return render_template('Home.html')
+@app.errorhandler(405)
+def method_not_found(e = None):
+    if request.path.startswith('/api/'):
+         return jsonify({"status": "Method Not Allowed","code": 405}),405
+    else:
+        return render_template('404.html'),405
 
+@app.errorhandler(500)
+def Internal_server_error(e = None,message = "Internal server error"):
+    if request.path.startswith('/api/'):
+         return jsonify({"status": "internal server error","code": 500 , "message":message}),500
+    else:
+        if e is not None:
+            print("Error 500 : ",e)
+        return render_template('500.html'),500
+    
+@app.template_filter('quote')
+def quote_filter(s):
+     return urllib.parse.quote(s)

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}<title>[404] Notes APP</title> {% endblock %}
+{% block styles %}
+    {{super()}}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/404.css')}}">
+{% endblock  %}
+{% block content %}
+<div id="notfound">
+    <div class="notfound">
+        <div class="notfound-404">
+            <h1>500</h1>
+        </div>
+        <h2>Oops! Things are a little unstable</h2>
+        <p>The page you are looking for is temporarily unavailable. <a href="{{url_for('APP_USER.app_home') }}">Return to homepage</a></p>
+    </div>
+</div>
+{% endblock %}

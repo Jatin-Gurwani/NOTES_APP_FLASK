@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Notes_NotesAPP</title>
+{% endblock  %}
+
+{% block content %}
+
+    <div class="container-fluid ">
+        <div class = "row pt-3">
+            <div class = "col-md-2">
+                <a class="btn btn-outline-dark mt-1 " data-bs-toggle="modal" data-bs-target="#CreateNote"> <span class="material-symbols-outlined">note_add</span><span class="ms-1">create note</span> </a>
+            </div>
+            <div class="col-md-5 mx-auto">
+                 {% if search_form %}
+                    <form method="POST">
+                        {{ search_form.csrf_token() }}
+                        <div class="input-group mb-3">
+                            {{ search_form.search(class="form-control border-dark") }}
+                            <button class="btn btn-outline-dark" type="submit" name="search_submit"><span class="material-symbols-outlined">search</span></button>
+                        </div>
+                    </form>
+                    
+                 {% endif %}
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 pt-4">
+            
+
+            {% if note_list %}
+             {% for note in note_list  %}
+                <div class="col">
+                    <div class="card  border-dark" style="width: 18rem;">
+                        <div class="card-body">
+                          <h5 class="card-title">{{note.title}}</h5>
+                          <p class="card-text">{{note.content}}</p>
+                          <h6 class="card-subtitle mb-2 text-muted"> last modified :{{note.updated_at}}</h6>
+                          <a class="card-link" onclick="modifyNotejs('{{note.id}}','{{note.title|quote}}','{{note.content|quote}}')" ><span class="material-symbols-outlined">edit_square</span></a>
+                          <a href="{{url_for('APP_NOTES.delete_note', id=note.id)}}" class="card-link" ><span class="material-symbols-outlined text-danger">delete</span></a>
+                        </div>
+                      </div>
+
+                </div>
+             {% endfor %}
+
+                
+            
+
+        </div>
+        {% else %}
+                {% if notes_message %}
+                <div class=" position-absolute top-50 start-50 translate-middle"><p class="fs-2 text-muted">{{notes_message}}</p></div>
+                {% endif %}
+                
+            {% endif %}
+
+
+
+
+  
+    <!-- Modal -->
+    <div class="modal fade" id="CreateNote" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="CreateNoteLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable ">
+            {% from 'bootstrap5/form.html' import render_field  %}
+            <form method="POST" action="{{ url_for('APP_NOTES.create_note') }}">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="CreateNoteLabel">Notes Creation</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {{ create_form.csrf_token() }}
+                        {{ render_field(create_form.title, class="form-control") }}
+                        {{ render_field(create_form.content, class="form-control") }}
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    {{render_field(create_form.create, class="btn btn-primary")}}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ModifyNote" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ModifyNoteLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable ">
+            {% from 'bootstrap5/form.html' import render_field  %}
+            <form method="POST" action="{{ url_for('APP_NOTES.modify_note') }}">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="ModifyNoteLabel">Note Modification</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {{ modify_form.csrf_token() }}
+                        <input type="hidden" name="id" id="noteId">
+                        <div class="form-group">
+                            <label for="noteTitle">Title</label>
+                            <input type="text" class="form-control" id="noteTitle" name="title">
+                        </div>
+                        <div class="form-group">
+                            <label for="noteContent">Content</label>
+                            <textarea class="form-control" id="noteContent" name="content" rows="13"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    {{render_field(modify_form.modify, class="btn btn-primary")}}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+
+    <script>
+        
+            function modifyNotejs(id,title,content){
+                console.log("modify note");
+                console.log(id);
+                console.log(content);
+                document.getElementById('noteId').value=id;
+                document.getElementById('noteTitle').value=decodeURIComponent(title);
+                document.getElementById('noteContent').value=decodeURIComponent(content);
+                const myModal = new bootstrap.Modal('#ModifyNote', { keyboard: false});
+                myModal.show();
+            }
+            
+    </script>
+        
+    
+    
+{% endblock  %}
