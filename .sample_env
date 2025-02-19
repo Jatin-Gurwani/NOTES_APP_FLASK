@@ -17,8 +17,13 @@ OPENAPI_VERSION = 3.0.3
 OPENAPI_URL_PREFIX = /
 OPENAPI_SWAGGER_UI_PATH = /apidocs
 OPENAPI_SWAGGER_UI_URL = https://cdn.jsdelivr.net/npm/swagger-ui-dist/
+SECRET_KEY = flask_another_secret_code
 
 #JWT Configuration
 JWT_SECRET_KEY =  Flask_secret_code
 
+#Logger Configuration
+LOG_PATH = /Logs/
+LOG_FILE_SIZE = 10000000
+LOG_FILE_COUNT = 10
 

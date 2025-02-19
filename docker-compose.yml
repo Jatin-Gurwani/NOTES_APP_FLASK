@@ -2,8 +2,8 @@
 
 services:
   
-  notesappflask_v1.0:
-    image: notesappflask_v1.0
+  notesappflask_v1.1:
+    image: notesappflask_v1.1
     build:
       context: .
       dockerfile: ./Dockerfile

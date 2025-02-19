@@ -1,0 +1,32 @@
+
+    .btn-check+.btn {
+        width: 30px;
+        height: 30px;
+        border: 2px solid transparent;
+        transition: 0.2s;
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
+
+    }
+
+    .btn-check:checked+.btn {
+        border-color: lightslategray;
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    #Modify_modal_content,#Modify_modal_content .form-control {
+        background-color: var(--notecolor);
+    }
+
+    /*.card a {
+            color: inherit;  
+            text-decoration: none;  
+        }
+    .card a:hover {
+            color: inherit;  
+        }
+    .card .card-body {
+            color: #000;   Set a default text color for card content 
+        }*/
+    
+    
+

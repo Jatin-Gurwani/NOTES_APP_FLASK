@@ -11,6 +11,12 @@ class api_user_schema(api_response_schema):
     username = fields.Str(required=True)
     password = fields.Str(required=True,load_only=True)
 
+class api_user_register_schema(api_response_schema):
+    id = fields.Integer(dump_only=True)
+    username = fields.Str(required=True)
+    email = fields.Str(required=True)
+    password = fields.Str(required=True,load_only=True)
+
 # api/notes schema
 class api_notes_plain_schema(Schema):
     id = fields.Integer(dump_only=True)

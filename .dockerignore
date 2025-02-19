@@ -13,3 +13,5 @@ __pycache__/
 
 # Ignore test files and directories
 
+logs/
+

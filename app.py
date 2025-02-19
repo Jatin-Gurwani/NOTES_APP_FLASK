@@ -9,10 +9,16 @@ from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from config import app_config
 import urllib.parse
+from resources.logger import setup_logger
+from resources.request_logger import log_request_response
 
 app = Flask(__name__)
-cfg =app_config()
+cfg = app_config()
 app_url_prefix = '/app'
+
+# Setup logging
+app.api_logger = setup_logger(app)
+app.logger.info("Flask is getting Started")
 
 app.config["PROPAGATE_EXCEPTIONS"] = cfg.PROPAGATE_EXCEPTIONS
 app.config["API_TITLE"] = cfg.API_TITLE
@@ -34,7 +40,7 @@ app.config["JWT_SECRET_KEY"] = cfg.JWT_SECRET_KEY
 
 
 bootstrap = Bootstrap5(app)
-app.config["SECRET_KEY"] = "Notes Flask App"
+app.config["SECRET_KEY"] = cfg.SECRET_KEY
 jwt = JWTManager(app)
 
 
@@ -76,6 +82,7 @@ API.register_blueprint(blp_app_notes,url_prefix = '/app')
 
 @app.errorhandler(404)
 def page_not_found(e = None):
+    app.api_logger.error(f'endpoint : {request.url}, message : {e}')
     if request.path.startswith('/api/'):
          return jsonify({"status": "Not Found","code": 404}),404
     else:
@@ -100,3 +107,7 @@ def Internal_server_error(e = None,message = "Internal server error"):
 @app.template_filter('quote')
 def quote_filter(s):
      return urllib.parse.quote(s)
+
+@app.template_filter('summary')
+def content_summary(s):
+    return  s if len(s) < 150 else s[0:150] + '....'

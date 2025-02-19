@@ -1,0 +1,62 @@
+{% extends "notes.html" %}
+{% from 'bootstrap5/form.html' import render_field %}
+
+{% block title %}
+<title>Labels_NotesAPP</title>
+{% endblock %}
+
+{% block label_list_page %}
+    {{super()}}
+
+    <div class="col-md-6 mx-auto">
+        <form method="POST" action="{{ url_for('APP_NOTES.create_label') }}">
+            {{ label_form.csrf_token() }}
+            <div class="input-group mb-3">
+                {{ label_form.name (class="form-control border-dark") }}
+                {{ label_form.submit (class="btn btn-outline-dark") }}
+            </div>
+        </form>
+    </div>
+
+    {% if labels %}
+    <div class="col-md-8 mx-auto">
+        <div class="accordion" id="accordionForLabel">
+            {% for label in labels %}
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{label.id}}" aria-expanded="true" aria-controls="collapse{{label.id}}">
+                    {{label.name}}
+                </button>
+                </h2>
+                <div id="collapse{{label.id}}" class="accordion-collapse collapse" data-bs-parent="#accordionForLabel">
+                <div class="accordion-body">
+                    <form method="post" action="{{ url_for('APP_NOTES.modify_label', label_id=label.id) }}">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="name" value="{{label.name}}">
+                            <button class="btn btn-outline-primary" type="submit" name="submit">Update</button>
+                            <a class="btn btn-outline-danger" href="{{ url_for('APP_NOTES.delete_label', label_id=label.id) }}">Delete</a>
+                        </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
+        
+        
+    </div>
+    {% else %}
+    <div class="col-md-8 mx-auto text-center">
+
+        <p class="fs-2 text-muted">No Labels Found</p>
+    </div>
+    
+    {% endif %}
+
+{% endblock %}
+
+{% block content %}
+    {{super()}}
+{% endblock  %}

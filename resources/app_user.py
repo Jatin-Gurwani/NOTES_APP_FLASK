@@ -1,4 +1,4 @@
-from flask import Flask,render_template,redirect,url_for,session,request,flash
+from flask import Flask,render_template,redirect,url_for,session,request,flash,current_app
 from flask.views import MethodView
 from models import db,usermodel
 from flask_smorest import Blueprint
@@ -33,13 +33,14 @@ class app_register(MethodView):
         if form.validate_on_submit():
             username = request.form['username']
             password = request.form['password']
+            email = request.form['email']
             user = usermodel.query.filter(usermodel.username == username).first()
             if user:
                 return render_template('register.html',error="User Already Exist")
             else:
                 try:
                     user_password_encrypted = pbkdf2_sha256.hash(password)
-                    new_user = usermodel(username = username,password = user_password_encrypted)
+                    new_user = usermodel(username = username,password = user_password_encrypted,email = email)
                     db.session.add(new_user)
                     db.session.commit()
                     flash('User Registered Successfully', 'info')
